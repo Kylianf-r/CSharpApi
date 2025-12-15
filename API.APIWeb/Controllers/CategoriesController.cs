@@ -30,15 +30,15 @@ namespace API.APIWeb.Controllers
 
         // GET: api/<CategoriesController>
         [HttpGet]
-        public async Task<List<Category>> Get()
+        //remplacer async Task<list.. par IACtionResult :
+        public IActionResult CategoryGet()
         {
             // Appel API Chuck Norris 
             var client = new HttpClient();
-            var json = await client.GetStringAsync("https://api.chucknorris.io/jokes/categories");
+            var json = client.GetStringAsync("https://api.chucknorris.io/jokes/categories").Result;
 
             // Désérialisation du json de l'api
-            var remoteNames = JsonSerializer.Deserialize<List<string>>(json) ?? new List<string>();
-            var categories = new List<Category>();
+            var remoteNames = JsonSerializer.Deserialize<List<string>>(json);
 
             // Ajout dans la nouvelle liste
             foreach (var item in remoteNames)
@@ -48,7 +48,7 @@ namespace API.APIWeb.Controllers
                     Description = item.ToString()
                 });
             }
-            return categories;
+            return Ok(categories);
         }
 
         // GET api/<CategoriesController>/5

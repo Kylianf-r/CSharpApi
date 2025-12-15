@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -8,13 +9,25 @@ namespace API.APIWeb.Controllers
     [ApiController]
     public class JokesController : ControllerBase
     {
+        //Créer le constructeur
+        static List<Joke> jokes;
+
+
         // GET: api/<JokesController>
         [HttpGet]
-        public IEnumerable<string> Get()
+        public IActionResult JokeGet()
         {
-            return new string[] { "value1", "value2" };
-        }
+            // Appel API Chuck Norris 
+            var client = new HttpClient();
+            var json = client.GetStringAsync("https://api.chucknorris.io/jokes/random").Result;
 
+            // Désérialisation du json de l'api
+            var remoteJokes = JsonSerializer.Deserialize<List<string>>(json);
+
+            // Return
+            return Ok(jokes);
+        }
+        
         // GET api/<JokesController>/5
         [HttpGet("{id}")]
         public string Get(int id)
