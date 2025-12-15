@@ -21,7 +21,7 @@ namespace API.APIWeb.Controllers
             var client = new HttpClient();
             var json = client.GetStringAsync("https://api.chucknorris.io/jokes/random").Result;
 
-            // Désérialisation du json de l'api
+            // Désérialisation du json de l'api eeee
             var remoteJokes = JsonSerializer.Deserialize<List<string>>(json);
 
             // Return
